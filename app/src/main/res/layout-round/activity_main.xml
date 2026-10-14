@@ -20,6 +20,7 @@
             android:layout_weight="1" />
 
         <LinearLayout
+            android:id="@+id/displayArea"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1.5"
@@ -70,10 +71,17 @@
             </HorizontalScrollView>
         </LinearLayout>
 
-        <LinearLayout
+        <com.nickwoluff.wearcalculator.SwipeLayout
+            android:id="@+id/buttonArea"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3.2"
+            android:clipChildren="true">
+
+        <LinearLayout
+            android:id="@+id/basicButtons"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -146,20 +154,14 @@
                 android:layout_weight="0.4" />
 
         </LinearLayout>
+
+        <include layout="@layout/scientific_buttons" />
+        <com.nickwoluff.wearcalculator.PageIndicatorView
+            android:id="@+id/pageIndicator"
+            android:layout_width="40dp"
+            android:layout_height="12dp"
+            android:layout_gravity="bottom|center_horizontal" />
+        </com.nickwoluff.wearcalculator.SwipeLayout>
     </LinearLayout>
-
-    <androidx.wear.widget.CurvedTextView
-        android:id="@+id/curvedTime"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-
-        android:fontFamily="sans-serif-medium"
-        android:textStyle="bold"
-
-        app:anchorAngleDegrees="0"
-        app:anchorPosition="center"
-        app:clockwise="true" />
 
 </FrameLayout>

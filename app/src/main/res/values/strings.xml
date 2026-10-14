@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">嗷呜计算器</string>
+    <string name="page_indicator_description">第 %1$d 页，共 2 页</string>
+    <string name="settings_title">设置</string>
+    <string name="theme_settings">主题设置</string>
+    <string name="accent_color">强调色</string>
+    <string name="palette_style">调色板风格</string>
+    <string name="screen_layout">屏幕布局</string>
+    <string name="layout_square">方屏</string>
+    <string name="layout_round">圆屏</string>
+    <string name="check_update">检查更新</string>
+    <string name="auto_check_update">自动检查更新</string>
+    <string name="auto_update_enabled">启动时检查</string>
+    <string name="auto_update_disabled">仅手动检查</string>
+    <string name="current_version">当前版本 %1$s</string>
+    <string name="checking_update">正在检查…</string>
+    <string name="already_latest">已是最新版本</string>
+    <string name="no_releases">暂无正式发布版本</string>
+    <string name="update_failed">检查失败，请检查网络后重试</string>
+    <string name="update_rate_limited">检查过于频繁，请稍后重试</string>
+    <string name="new_version">发现新版本 %1$s</string>
+    <string name="update_instructions">可前往 GitHub Release 页面更新</string>
+    <string name="open_release">前往 Release</string>
+    <string name="no_browser">请在手机浏览器访问 github.com/NickWoluff/WearCalculator/releases 更新</string>
+    <string name="history_title">历史记录</string>
+    <string name="history_empty">还没有运算记录</string>
+    <string name="history_equation">%1$s=</string>
 </resources>

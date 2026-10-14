@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/scientificButtons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="6dp"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:weightSum="4">
+            <Button android:id="@+id/btnScientificAc" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_danger" android:text="C" />
+            <Button android:id="@+id/btnScientificDel" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_danger" android:text="⌫" />
+            <Button android:id="@+id/btnSecond" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_second" android:text="2nd" />
+            <Button android:id="@+id/btnScientificDiv" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_accent" android:text="÷" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:weightSum="4">
+            <Button android:id="@+id/btnSin" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_trig" android:text="sin" />
+            <Button android:id="@+id/btnCos" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_trig" android:text="cos" />
+            <Button android:id="@+id/btnTan" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_trig" android:text="tan" />
+            <Button android:id="@+id/btnScientificMul" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_accent" android:text="×" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:weightSum="4">
+            <Button android:id="@+id/btnLg" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_log" android:text="lg" />
+            <Button android:id="@+id/btnLn" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_log" android:text="ln" />
+            <Button android:id="@+id/btnLog" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_log" android:text="log" />
+            <Button android:id="@+id/btnPower" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_accent" android:text="xʸ" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:weightSum="4">
+            <Button android:id="@+id/btnLeftParen" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_dark" android:text="(" />
+            <Button android:id="@+id/btnRightParen" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_dark" android:text=")" />
+            <Button android:id="@+id/btnSqrt" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_accent" android:text="√" />
+            <Button android:id="@+id/btnFactorial" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_accent" android:text="!" />
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:weightSum="4">
+            <Button android:id="@+id/btnPi" style="@style/ScientificButton" android:layout_weight="2" android:background="@drawable/bg_btn_dark" android:text="π" />
+            <Button android:id="@+id/btnE" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_dark" android:text="e" />
+            <Button android:id="@+id/btnScientificEq" style="@style/ScientificButton" android:layout_weight="1" android:background="@drawable/bg_btn_accent" android:text="=" />
+        </LinearLayout>
+    </LinearLayout>
