@@ -56,7 +56,7 @@
 .\gradlew.bat lint
 ```
 
-调试包位于 `app/build/outputs/apk/debug/app-debug.apk`。连接手表或已有模拟器后，可运行 `.\gradlew.bat connectedAndroidTest` 验证界面与手势。发布构建使用 `.\gradlew.bat assembleRelease`，分发前需自行签名。
+调试包位于 `app/build/outputs/apk/debug/app-debug.apk`。连接手表或已有模拟器后，可运行 `.\gradlew.bat connectedAndroidTest` 验证界面与手势。发布构建使用 `.\gradlew.bat assembleRelease`，安装包按版本号命名为 `app/build/outputs/apk/release/WearCalculator_vX.X.X.apk`（当前为 `WearCalculator_v1.2.0.apk`），分发前需自行签名。
 
 ## 🆕 1.2.0 主要变化
 

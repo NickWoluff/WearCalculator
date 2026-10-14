@@ -44,6 +44,14 @@ android {
     }
 }
 
+androidComponents {
+    onVariants(selector().withBuildType("release")) { variant ->
+        variant.outputs.forEach { output ->
+            output.outputFileName.set(output.versionName.map { "WearCalculator_v$it.apk" })
+        }
+    }
+}
+
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
