@@ -18,7 +18,7 @@ public class HistoryActivity extends WearActivity {
         setContentView(R.layout.activity_history);
         LinearLayout entries = findViewById(R.id.historyEntries);
         boolean round = getResources().getConfiguration().isScreenRound();
-        entries.setPadding(0, 0, 0, Math.round(dp(round ? 40 : 24)));
+        entries.setPadding(0, 0, 0, Math.round(dp(round ? 12 : 6)));
         List<HistoryStore.Entry> history = HistoryStore.read(this);
         LayoutInflater inflater = LayoutInflater.from(this);
         if (history.isEmpty()) {

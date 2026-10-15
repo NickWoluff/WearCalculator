@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Update
 import androidx.compose.material.icons.filled.Autorenew
 import androidx.compose.material.icons.filled.Watch
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -46,6 +47,7 @@ class SettingsUiController @JvmOverloads constructor(
     private var checking by mutableStateOf(false)
     private val context = activity.applicationContext
     private var autoCheck by mutableStateOf(UpdatePreferences.autoCheck(context))
+    private var highPrecision by mutableStateOf(PrecisionPreferences.enabled(context))
     private var layoutPickerVisible by mutableStateOf(false)
     private var atListStart: () -> Boolean = { false }
     fun isAtListStart() = !layoutPickerVisible && atListStart()
@@ -88,6 +90,20 @@ class SettingsUiController @JvmOverloads constructor(
                             transformation = SurfaceTransformation(spec)) { Text(stringResource(R.string.settings_title)) }
                     }
                     item {
+                        HighPrecisionSwitch(Modifier.fillMaxWidth().transformedHeight(this, spec)
+                            .minimumVerticalContentPadding(ButtonDefaults.minimumVerticalListContentPadding),
+                            SurfaceTransformation(spec))
+                    }
+                    item {
+                        ThemeButton(Modifier.fillMaxWidth().transformedHeight(this, spec)
+                            .minimumVerticalContentPadding(ButtonDefaults.minimumVerticalListContentPadding), SurfaceTransformation(spec))
+                    }
+                    item {
+                        LayoutPickerButton(Modifier.fillMaxWidth().transformedHeight(this, spec)
+                            .minimumVerticalContentPadding(ButtonDefaults.minimumVerticalListContentPadding),
+                            SurfaceTransformation(spec))
+                    }
+                    item {
                         UpdateButton(Modifier.fillMaxWidth().transformedHeight(this, spec)
                             .minimumVerticalContentPadding(ButtonDefaults.minimumVerticalListContentPadding),
                             SurfaceTransformation(spec))
@@ -101,15 +117,6 @@ class SettingsUiController @JvmOverloads constructor(
                     }
                     item {
                         AutoUpdateSwitch(Modifier.fillMaxWidth().transformedHeight(this, spec)
-                            .minimumVerticalContentPadding(ButtonDefaults.minimumVerticalListContentPadding),
-                            SurfaceTransformation(spec))
-                    }
-                    item {
-                        ThemeButton(Modifier.fillMaxWidth().transformedHeight(this, spec)
-                            .minimumVerticalContentPadding(ButtonDefaults.minimumVerticalListContentPadding), SurfaceTransformation(spec))
-                    }
-                    item {
-                        LayoutPickerButton(Modifier.fillMaxWidth().transformedHeight(this, spec)
                             .minimumVerticalContentPadding(ButtonDefaults.minimumVerticalListContentPadding),
                             SurfaceTransformation(spec))
                     }
@@ -128,11 +135,12 @@ class SettingsUiController @JvmOverloads constructor(
                         .requestFocusOnHierarchyActive()
                         .rotaryScrollable(RotaryScrollableDefaults.behavior(state), focus)) {
                     item { ListHeader(Modifier.fillMaxWidth()) { Text(stringResource(R.string.settings_title)) } }
+                    item { HighPrecisionSwitch(Modifier.fillMaxWidth()) }
+                    item { ThemeButton(Modifier.fillMaxWidth()) }
+                    item { LayoutPickerButton(Modifier.fillMaxWidth()) }
                     item { UpdateButton(Modifier.fillMaxWidth()) }
                     if (releaseTag != null) item { ReleaseButton(Modifier.fillMaxWidth()) }
                     item { AutoUpdateSwitch(Modifier.fillMaxWidth()) }
-                    item { ThemeButton(Modifier.fillMaxWidth()) }
-                    item { LayoutPickerButton(Modifier.fillMaxWidth()) }
                     item { CopyrightText(Modifier.fillMaxWidth()) }
                 }
             }
@@ -168,6 +176,25 @@ class SettingsUiController @JvmOverloads constructor(
             icon = { Icon(Icons.Default.Palette, null, Modifier.size(ButtonDefaults.IconSize)) }) {
             Text(stringResource(R.string.theme_settings))
         }
+    }
+
+    @Composable
+    private fun HighPrecisionSwitch(modifier: Modifier, transformation: SurfaceTransformation? = null) {
+        val round = LocalConfiguration.current.isScreenRound
+        val labelStyle = if (round) MaterialTheme.typography.labelMedium
+            else MaterialTheme.typography.labelMedium.copy(fontSize = 13.sp)
+        val descriptionStyle = if (round) MaterialTheme.typography.labelSmall
+            else MaterialTheme.typography.labelSmall.copy(fontSize = 12.sp)
+        SwitchButton(checked = highPrecision,
+            onCheckedChange = { highPrecision = it; PrecisionPreferences.setEnabled(context, it) },
+            modifier = modifier.testTag("high_precision"), transformation = transformation,
+            contentPadding = if (round) SwitchButtonDefaults.ContentPadding
+                else PaddingValues(horizontal = 12.dp, vertical = 8.dp),
+            icon = { Icon(Icons.Default.Tune, null, Modifier.size(ButtonDefaults.IconSize)) },
+            secondaryLabel = {
+                Text(stringResource(if (highPrecision) R.string.high_precision_enabled
+                    else R.string.high_precision_disabled), style = descriptionStyle)
+            }) { Text(stringResource(R.string.high_precision_calculation), style = labelStyle) }
     }
 
     @Composable

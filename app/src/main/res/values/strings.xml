@@ -1,7 +1,13 @@
 <resources>
     <string name="app_name">嗷呜计算器</string>
     <string name="page_indicator_description">第 %1$d 页，共 2 页</string>
+    <string name="cube_root">立方根</string>
+    <string name="logarithm">对数：底数，真数</string>
+    <string name="argument_separator">参数分隔逗号</string>
     <string name="settings_title">设置</string>
+    <string name="high_precision_calculation">高精度计算</string>
+    <string name="high_precision_enabled">小数点后最多保留 16 位</string>
+    <string name="high_precision_disabled">小数点后最多保留 8 位</string>
     <string name="theme_settings">主题设置</string>
     <string name="accent_color">强调色</string>
     <string name="palette_style">调色板风格</string>
@@ -22,7 +28,7 @@
     <string name="update_instructions">可前往 GitHub Release 页面更新</string>
     <string name="open_release">前往 Release</string>
     <string name="no_browser">请在手机浏览器访问 github.com/NickWoluff/WearCalculator/releases 更新</string>
-    <string name="history_title">历史记录</string>
+    <string name="history_title">计算历史</string>
     <string name="history_empty">还没有运算记录</string>
     <string name="history_equation">%1$s=</string>
 </resources>

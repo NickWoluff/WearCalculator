@@ -6,7 +6,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.InputDevice;
+import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
@@ -24,6 +26,7 @@ public abstract class WearActivity extends ComponentActivity {
     private boolean exitEligible;
     private boolean exitDragging;
     private boolean exitDirectionLocked;
+    private float rotaryAccumulator;
     private final Runnable showTime = () -> {
         if (time != null) time.animate().alpha(1f).translationY(0).setDuration(250).start();
     };
@@ -95,6 +98,29 @@ public abstract class WearActivity extends ComponentActivity {
 
     protected float dp(float value) {
         return value * getResources().getDisplayMetrics().density;
+    }
+
+    @Override
+    public boolean dispatchGenericMotionEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_SCROLL
+                && event.isFromSource(InputDevice.SOURCE_ROTARY_ENCODER)) {
+            int axis = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                    ? MotionEvent.AXIS_SCROLL : MotionEvent.AXIS_VSCROLL;
+            float delta = -event.getAxisValue(axis);
+            if (delta != 0f) {
+                rotaryAccumulator += delta;
+                if (Math.abs(rotaryAccumulator) >= CalculatorHaptics.ROTARY_THRESHOLD) {
+                    View decor = getWindow().getDecorView();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                        decor.performHapticFeedback(18);
+                    } else {
+                        decor.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
+                    }
+                    rotaryAccumulator = 0f;
+                }
+            }
+        }
+        return super.dispatchGenericMotionEvent(event);
     }
 
     @Override

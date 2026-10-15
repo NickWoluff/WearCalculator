@@ -22,9 +22,11 @@ class SettingsComponentsTest {
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
     private lateinit var activity: SettingsActivity
     private var savedAutoCheck = true
+    private var savedHighPrecision = false
 
     @Before fun launch() {
         savedAutoCheck = UpdatePreferences.autoCheck(instrumentation.targetContext)
+        savedHighPrecision = PrecisionPreferences.enabled(instrumentation.targetContext)
         UpdatePreferences.setAutoCheck(instrumentation.targetContext, true)
         val intent = Intent(instrumentation.targetContext, SettingsActivity::class.java)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -36,6 +38,27 @@ class SettingsComponentsTest {
         instrumentation.runOnMainSync { activity.finish() }
         instrumentation.waitForIdleSync()
         UpdatePreferences.setAutoCheck(instrumentation.targetContext, savedAutoCheck)
+        PrecisionPreferences.setEnabled(instrumentation.targetContext, savedHighPrecision)
+    }
+
+    @Test fun highPrecisionSwitchPersistsAndAppearsFirst() {
+        compose.onNodeWithTag("high_precision").assertIsOff().assertTextContains("高精度计算")
+        compose.onNodeWithTag("high_precision").performClick().assertIsOn()
+        assertTrue(PrecisionPreferences.enabled(instrumentation.targetContext))
+        val previous = activity
+        instrumentation.runOnMainSync { activity.recreate() }
+        compose.waitUntil(timeoutMillis = 10000) {
+            var ready = false
+            instrumentation.runOnMainSync {
+                val resumed = androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry.getInstance()
+                    .getActivitiesInStage(androidx.test.runner.lifecycle.Stage.RESUMED)
+                    .filterIsInstance<SettingsActivity>().firstOrNull { it !== previous }
+                if (resumed != null) { activity = resumed; ready = true }
+            }
+            ready
+        }
+        compose.waitForIdle()
+        compose.onNodeWithTag("high_precision").assertIsOn()
     }
 
     @Test fun autoUpdateSwitchPersistsAndKeepsManualCheckEnabled() {
@@ -76,6 +99,7 @@ class SettingsComponentsTest {
     @Test fun officialButtonShowsCheckingStateAndReleaseAction() {
         val ui = activity.uiForTesting
         compose.onNodeWithTag("floating_time").assertExists()
+        compose.onNodeWithTag("settings_list").performScrollToNode(hasTestTag("check_update"))
         compose.onNodeWithTag("check_update").assertIsEnabled().assertTextContains("检查更新")
         instrumentation.runOnMainSync { ui.updateChecking(true) }
         compose.onNodeWithTag("check_update").assertIsNotEnabled().assertTextContains("正在检查…")
@@ -95,6 +119,7 @@ class SettingsComponentsTest {
             val ui = SettingsUiController(activity, "1.1.1", Runnable { checks.incrementAndGet() }, Runnable {})
             activity.setContentView(ui.view)
         }
+        compose.onNodeWithTag("settings_list").performScrollToNode(hasTestTag("check_update"))
         val center = compose.onNodeWithTag("check_update").fetchSemanticsNode().boundsInRoot.center
         instrumentation.runOnMainSync { activity.toastForTesting.show("已是最新版本") }
         SystemClock.sleep(320)

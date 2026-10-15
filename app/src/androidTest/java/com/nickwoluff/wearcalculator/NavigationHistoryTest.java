@@ -85,6 +85,9 @@ public class NavigationHistoryTest {
         instrumentation.runOnMainSync(() -> {
             ViewGroup entries = activity.findViewById(R.id.historyEntries);
             assertEquals(19, entries.getChildCount());
+            View icon = activity.findViewById(R.id.historyIcon);
+            assertNotNull(icon);
+            assertEquals("计算历史", icon.getContentDescription().toString());
             View newest = entries.getChildAt(18);
             assertTrue(((TextView) newest.findViewById(R.id.historyEquation)).getText().toString().endsWith("+9="));
             HorizontalScrollView equation = newest.findViewById(R.id.historyEquationScroll);
@@ -163,19 +166,83 @@ public class NavigationHistoryTest {
                 ((TextView) activity.findViewById(R.id.tvDisplay)).getText().toString()));
     }
 
+    @Test public void upperAreaSwipeOpensHistory() {
+        boolean savedRound = LayoutPreferences.isRound(context);
+        try {
+            LayoutPreferences.setRound(context, context.getResources().getConfiguration().isScreenRound());
+            // 分别从顶部、时间区域和结果区上方留白开始下滑。
+            for (int zone = 0; zone < 3; zone++) {
+                launch(MainActivity.class);
+                instrumentation.runOnMainSync(() -> {
+                    activity.findViewById(R.id.btn1).performClick();
+                    activity.findViewById(R.id.btn2).performClick();
+                });
+                View root = activity.getWindow().getDecorView();
+                View display = activity.findViewById(R.id.displayArea);
+                int[] rootLocation = new int[2];
+                int[] displayLocation = new int[2];
+                instrumentation.runOnMainSync(() -> {
+                    root.getLocationOnScreen(rootLocation);
+                    display.getLocationOnScreen(displayLocation);
+                });
+                float density = activity.getResources().getDisplayMetrics().density;
+                float startY = rootLocation[1] + (zone == 0 ? 8 * density
+                        : zone == 1 ? 18 * density
+                        : (displayLocation[1] - rootLocation[1]) / 2f);
+                Instrumentation.ActivityMonitor monitor = instrumentation.addMonitor(HistoryActivity.class.getName(), null, false);
+                try {
+                    swipe(rootLocation[0] + root.getWidth() / 2f, startY, startY + 60 * density);
+                    child = instrumentation.waitForMonitorWithTimeout(monitor, 3000);
+                    assertNotNull("顶部下滑区域 " + zone, child);
+                    instrumentation.runOnMainSync(() -> {
+                        assertEquals("12", ((TextView) activity.findViewById(R.id.tvDisplay)).getText().toString());
+                        child.finish();
+                    });
+                    instrumentation.waitForIdleSync();
+                } finally {
+                    instrumentation.removeMonitor(monitor);
+                }
+            }
+        } finally {
+            LayoutPreferences.setRound(context, savedRound);
+        }
+    }
+
+    @Test public void shortOrHorizontalUpperSwipeDoesNotOpenHistory() {
+        launch(MainActivity.class);
+        View root = activity.getWindow().getDecorView();
+        float density = activity.getResources().getDisplayMetrics().density;
+        float x = root.getWidth() / 2f;
+        float y = 18 * density;
+        Instrumentation.ActivityMonitor monitor = instrumentation.addMonitor(HistoryActivity.class.getName(), null, false);
+        try {
+            swipe(x, y, y + 20 * density);
+            long start = SystemClock.uptimeMillis();
+            send(start, MotionEvent.ACTION_DOWN, x, y);
+            send(start, MotionEvent.ACTION_MOVE, x + 30 * density, y);
+            send(start, MotionEvent.ACTION_UP, x + 40 * density, y);
+            instrumentation.waitForIdleSync();
+            assertNull(instrumentation.waitForMonitorWithTimeout(monitor, 300));
+        } finally {
+            instrumentation.removeMonitor(monitor);
+        }
+    }
+
     @Test public void scientificButtonsCalculateFunctionsPowersAndFactorials() {
         launch(MainActivity.class);
         instrumentation.runOnMainSync(() -> {
             assertCalculation("8", R.id.btn2, R.id.btnPower, R.id.btn3);
             assertCalculation("3", R.id.btnSqrt, R.id.btn9, R.id.btnRightParen);
-            assertCalculation("2", R.id.btnLg, R.id.btn1, R.id.btn0, R.id.btn0, R.id.btnRightParen);
-            assertCalculation("1", R.id.btnLn, R.id.btnE, R.id.btnRightParen);
+            assertCalculation("2", R.id.btnLog, R.id.btn1, R.id.btn0, R.id.btnComma,
+                    R.id.btn1, R.id.btn0, R.id.btn0, R.id.btnRightParen);
+            assertCalculation("1", R.id.btnLog, R.id.btnE, R.id.btnComma, R.id.btnE, R.id.btnRightParen);
+            assertCalculation("3", R.id.btnCbrt, R.id.btn2, R.id.btn7, R.id.btnRightParen);
             assertCalculation("120", R.id.btn5, R.id.btnFactorial);
             assertCalculation("0", R.id.btnSin, R.id.btn0, R.id.btnRightParen);
             activity.findViewById(R.id.btnSecond).performClick();
             assertCalculation("0", R.id.btnSin, R.id.btn0, R.id.btnRightParen);
-            assertCalculation("Error", R.id.btnLn, R.id.btn0, R.id.btnRightParen);
-            assertEquals(7, HistoryStore.read(context).size());
+            assertCalculation("Error", R.id.btnLog, R.id.btn2, R.id.btnComma, R.id.btn0, R.id.btnRightParen);
+            assertEquals(8, HistoryStore.read(context).size());
         });
     }
 

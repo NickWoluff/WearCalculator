@@ -96,7 +96,7 @@ class ThemeSettingsTest {
                 assertEquals(Color.parseColor("#824C51"), backgroundColor(R.id.btnAc))
                 assertEquals(Color.parseColor("#824C51"), backgroundColor(R.id.btnScientificDel))
                 assertEquals(Color.parseColor("#254A48"), backgroundColor(R.id.btnSin))
-                assertEquals(Color.parseColor("#41405B"), backgroundColor(R.id.btnLn))
+                assertEquals(Color.parseColor("#41405B"), backgroundColor(R.id.btnLog))
                 activity.findViewById<Button>(R.id.btnSecond).performClick()
                 assertEquals(Color.parseColor("#426E6A"), backgroundColor(R.id.btnSecond))
                 assertEquals(Color.parseColor("#B0B0B0"), indicatorColor(activity, 0f, 0))

@@ -6,12 +6,19 @@ import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.view.View
 import android.view.ViewGroup
+import android.view.HapticFeedbackConstants
+import android.os.Build
 import android.widget.Button
 import android.widget.TextView
 import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.hapticfeedback.HapticFeedback
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.wear.compose.material3.ColorScheme
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.MotionScheme
@@ -104,10 +111,10 @@ object AppAppearance {
                 }
                 val (container, content) = when (view.id) {
                     R.id.btnEq, R.id.btnScientificEq -> scheme.primary to scheme.onPrimary
-                    R.id.btnAc, R.id.btnScientificAc, R.id.btnDel, R.id.btnScientificDel ->
+                    R.id.btnAc, R.id.btnDel, R.id.btnScientificDel ->
                         scheme.primaryContainer to scheme.onPrimaryContainer
                     R.id.btnSin, R.id.btnCos, R.id.btnTan -> scheme.tertiaryContainer to scheme.onTertiaryContainer
-                    R.id.btnLg, R.id.btnLn, R.id.btnLog -> scheme.secondaryContainer to scheme.onSecondaryContainer
+                    R.id.btnLog -> scheme.secondaryContainer to scheme.onSecondaryContainer
                     R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5,
                     R.id.btn6, R.id.btn7, R.id.btn8, R.id.btn9, R.id.btnDot -> scheme.surfaceContainer to scheme.onSurface
                     else -> scheme.primaryContainer to scheme.onPrimaryContainer
@@ -131,5 +138,30 @@ object AppAppearance {
 @Composable fun CalculatorTheme(content: @Composable () -> Unit) {
     val appearance = AppAppearance.observe()
     val colors = remember(appearance) { AppAppearance.colors(appearance) }
-    MaterialTheme(colorScheme = colors, motionScheme = MotionScheme.expressive(), content = content)
+    MaterialTheme(colorScheme = colors, motionScheme = MotionScheme.expressive()) {
+        CalculatorHapticFeedbackProvider(content)
+    }
+}
+
+@Composable private fun CalculatorHapticFeedbackProvider(content: @Composable () -> Unit) {
+    val view = LocalView.current
+    val feedback = remember(view) {
+        object : HapticFeedback {
+            override fun performHapticFeedback(hapticFeedbackType: HapticFeedbackType) = Unit
+        }
+    }
+    CompositionLocalProvider(LocalHapticFeedback provides feedback, content = content)
+}
+
+object CalculatorHaptics {
+    const val FEEDBACK_CONSTANT = 18
+    const val ROTARY_THRESHOLD = 0.4f
+
+    @JvmStatic fun perform(view: View) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            view.performHapticFeedback(FEEDBACK_CONSTANT)
+        } else {
+            view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+        }
+    }
 }

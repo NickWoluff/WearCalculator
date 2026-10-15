@@ -12,7 +12,7 @@
                 android:layout_weight="1"
                 android:weightSum="5">
 
-                <Button android:id="@+id/btnScientificAc" style="@style/ScientificButton" android:layout_weight="0.84" android:background="@drawable/bg_btn_danger" android:text="C" />
+                <Button android:id="@+id/btnScientificAc" style="@style/ScientificButton" android:layout_weight="0.84" android:background="@drawable/bg_btn_second" android:text="rad" android:contentDescription="切换到角度模式" />
                 <Button android:id="@+id/btnSin" style="@style/ScientificButton" android:layout_weight="0.83" android:background="@drawable/bg_btn_trig" android:text="sin" />
                 <Button android:id="@+id/btnCos" style="@style/ScientificButton" android:layout_weight="0.83" android:background="@drawable/bg_btn_trig" android:text="cos" />
                 <Button android:id="@+id/btnTan" style="@style/ScientificButton" android:layout_weight="0.83" android:background="@drawable/bg_btn_trig" android:text="tan" />
@@ -26,11 +26,11 @@
                 android:layout_weight="1"
                 android:weightSum="5">
                 <Space android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.25" />
-                <Button android:id="@+id/btnLg" style="@style/ScientificButton" android:layout_weight="0.9" android:background="@drawable/bg_btn_log" android:text="lg" />
-                <Button android:id="@+id/btnLn" style="@style/ScientificButton" android:layout_weight="0.9" android:background="@drawable/bg_btn_log" android:text="ln" />
-                <Button android:id="@+id/btnLog" style="@style/ScientificButton" android:layout_weight="0.9" android:background="@drawable/bg_btn_log" android:text="log" />
                 <Button android:id="@+id/btnPower" style="@style/ScientificButton" android:layout_weight="0.9" android:background="@drawable/bg_btn_accent" android:text="xʸ" />
                 <Button android:id="@+id/btnSqrt" style="@style/ScientificButton" android:layout_weight="0.9" android:background="@drawable/bg_btn_accent" android:text="√" />
+                <Button android:id="@+id/btnCbrt" style="@style/ScientificButton" android:layout_weight="0.9" android:background="@drawable/bg_btn_accent" android:text="³√" android:contentDescription="@string/cube_root" />
+                <Button android:id="@+id/btnFactorial" style="@style/ScientificButton" android:layout_weight="0.9" android:background="@drawable/bg_btn_accent" android:text="!" />
+                <Button android:id="@+id/btnPercent" style="@style/ScientificButton" android:layout_weight="0.9" android:background="@drawable/bg_btn_accent" android:text="%" />
             </LinearLayout>
 
             <LinearLayout
@@ -39,10 +39,10 @@
                 android:layout_weight="1"
                 android:weightSum="5">
                 <Space android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.6" />
+                <Button android:id="@+id/btnLog" style="@style/ScientificButton" android:layout_weight="0.95" android:background="@drawable/bg_btn_log" android:text="log" android:contentDescription="@string/logarithm" />
                 <Button android:id="@+id/btnLeftParen" style="@style/ScientificButton" android:layout_weight="0.95" android:background="@drawable/bg_btn_dark" android:text="(" />
+                <Button android:id="@+id/btnComma" style="@style/ScientificButton" android:layout_weight="0.95" android:background="@drawable/bg_btn_dark" android:text="," android:contentDescription="@string/argument_separator" />
                 <Button android:id="@+id/btnRightParen" style="@style/ScientificButton" android:layout_weight="0.95" android:background="@drawable/bg_btn_dark" android:text=")" />
-                <Button android:id="@+id/btnFactorial" style="@style/ScientificButton" android:layout_weight="0.95" android:background="@drawable/bg_btn_accent" android:text="!" />
-                <Button android:id="@+id/btnPercent" style="@style/ScientificButton" android:layout_weight="0.95" android:background="@drawable/bg_btn_accent" android:text="%" />
                 <Space android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.5" />
             </LinearLayout>
 

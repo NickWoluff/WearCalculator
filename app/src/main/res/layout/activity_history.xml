@@ -4,17 +4,26 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical" android:background="#000000">
 
-    <TextView android:id="@+id/historyTitle"
-        android:layout_width="match_parent" android:layout_height="wrap_content"
-        android:gravity="center" android:paddingTop="36dp" android:paddingBottom="12dp"
-        android:text="@string/history_title" android:textColor="#E2E2E9"
-        android:textSize="20sp" android:textStyle="bold" android:accessibilityHeading="true" />
-
     <ScrollView android:id="@+id/historyScroll"
         android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1"
         android:fillViewport="true" android:scrollbars="vertical">
-        <LinearLayout android:id="@+id/historyEntries"
+        <LinearLayout
             android:layout_width="match_parent" android:layout_height="wrap_content"
-            android:orientation="vertical" android:gravity="bottom" android:paddingBottom="24dp" />
+            android:orientation="vertical">
+            <FrameLayout android:id="@+id/historySafeArea"
+                android:layout_width="match_parent" android:layout_height="32dp" />
+            <LinearLayout android:id="@+id/historyEntries"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:gravity="bottom" android:paddingBottom="24dp" />
+
+            <FrameLayout
+                android:layout_width="match_parent" android:layout_height="58dp">
+                <com.nickwoluff.wearcalculator.OfficialHistoryIconView
+                    android:id="@+id/historyIcon"
+                    android:layout_width="24dp" android:layout_height="24dp"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="8dp" />
+            </FrameLayout>
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>
