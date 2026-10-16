@@ -83,6 +83,7 @@ class SettingsUiController @JvmOverloads constructor(
             ScreenScaffold(scrollInfoProvider = remember(state) { ScrollInfoProvider(state) },
                 contentPadding = PaddingValues(horizontal = side)) { padding ->
                 TransformingLazyColumn(state = state, contentPadding = padding,
+                    rotaryScrollableBehavior = RotaryScrollableDefaults.behavior(state, hapticFeedbackEnabled = false),
                     modifier = Modifier.fillMaxSize().testTag("settings_list").background(MaterialTheme.colorScheme.background)) {
                     item {
                         ListHeader(modifier = Modifier.fillMaxWidth().transformedHeight(this, spec)
@@ -133,7 +134,7 @@ class SettingsUiController @JvmOverloads constructor(
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier.fillMaxSize().testTag("settings_list").background(MaterialTheme.colorScheme.background)
                         .requestFocusOnHierarchyActive()
-                        .rotaryScrollable(RotaryScrollableDefaults.behavior(state), focus)) {
+                        .rotaryScrollable(RotaryScrollableDefaults.behavior(state, hapticFeedbackEnabled = false), focus)) {
                     item { ListHeader(Modifier.fillMaxWidth()) { Text(stringResource(R.string.settings_title)) } }
                     item { HighPrecisionSwitch(Modifier.fillMaxWidth()) }
                     item { ThemeButton(Modifier.fillMaxWidth()) }
@@ -146,7 +147,7 @@ class SettingsUiController @JvmOverloads constructor(
             }
         }
         // 与 WearFiles 一致：折叠入口打开官方单选弹窗，选择后保存并收起。
-        AlertDialog(visible = layoutPickerVisible, onDismissRequest = { layoutPickerVisible = false },
+        CalculatorAlertDialog(visible = layoutPickerVisible, onDismissRequest = { layoutPickerVisible = false },
             modifier = Modifier.testTag("layout_dialog"),
             title = { Text(stringResource(R.string.screen_layout)) }, content = {
                 items(2) { index -> LayoutButton(index == 1) }

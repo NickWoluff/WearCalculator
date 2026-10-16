@@ -2,15 +2,19 @@ package com.nickwoluff.wearcalculator
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.ContextWrapper
 import android.content.SharedPreferences
 import android.content.res.ColorStateList
 import android.view.View
 import android.view.ViewGroup
 import android.view.HapticFeedbackConstants
+import android.view.MotionEvent
+import android.view.Window
 import android.os.Build
 import android.widget.Button
 import android.widget.TextView
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.hapticfeedback.HapticFeedback
@@ -19,7 +23,11 @@ import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.window.DialogWindowProvider
+import androidx.wear.compose.foundation.lazy.ScalingLazyListScope
+import androidx.wear.compose.material3.AlertDialogContent
 import androidx.wear.compose.material3.ColorScheme
+import androidx.wear.compose.material3.Dialog
 import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.MotionScheme
 import com.google.android.material.color.utilities.*
@@ -145,12 +153,55 @@ object AppAppearance {
 
 @Composable private fun CalculatorHapticFeedbackProvider(content: @Composable () -> Unit) {
     val view = LocalView.current
-    val feedback = remember(view) {
+    val activity = remember(view) {
+        generateSequence(view.context) { (it as? ContextWrapper)?.baseContext }
+            .filterIsInstance<WearActivity>().firstOrNull()
+    }
+    val dialogWindow = (view.parent as? DialogWindowProvider)?.window
+    DisposableEffect(view, dialogWindow, activity) {
+        // Wear 列表会绕过 LocalHapticFeedback，直接请求承载 View 的震动。
+        // 只关闭 Compose 内容 View，保留 Activity decorView 的全局反馈。
+        val wasEnabled = view.isHapticFeedbackEnabled
+        view.isHapticFeedbackEnabled = false
+        val originalCallback = dialogWindow?.callback
+        val callback = if (originalCallback != null && activity != null) {
+            object : Window.Callback by originalCallback {
+                override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+                    activity.handleRotaryHaptics(event)
+                    return originalCallback.dispatchGenericMotionEvent(event)
+                }
+            }
+        } else null
+        if (callback != null) dialogWindow?.callback = callback
+        onDispose {
+            view.isHapticFeedbackEnabled = wasEnabled
+            if (callback != null && dialogWindow?.callback === callback) {
+                dialogWindow.callback = originalCallback
+            }
+        }
+    }
+    val feedback = remember {
         object : HapticFeedback {
             override fun performHapticFeedback(hapticFeedbackType: HapticFeedbackType) = Unit
         }
     }
     CompositionLocalProvider(LocalHapticFeedback provides feedback, content = content)
+}
+
+@Composable internal fun CalculatorAlertDialog(
+    visible: Boolean,
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
+    title: @Composable () -> Unit,
+    text: @Composable (() -> Unit)? = null,
+    content: (ScalingLazyListScope.() -> Unit)? = null,
+) {
+    // 沿用官方布局和动效；反馈设置覆盖整个弹窗，避免标题滚出屏幕后失效。
+    Dialog(visible = visible, onDismissRequest = onDismissRequest) {
+        CalculatorHapticFeedbackProvider {
+            AlertDialogContent(modifier = modifier, title = title, text = text, content = content)
+        }
+    }
 }
 
 object CalculatorHaptics {

@@ -6,9 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.InputDevice;
-import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
@@ -102,6 +100,12 @@ public abstract class WearActivity extends ComponentActivity {
 
     @Override
     public boolean dispatchGenericMotionEvent(MotionEvent event) {
+        handleRotaryHaptics(event);
+        return super.dispatchGenericMotionEvent(event);
+    }
+
+    // 普通页面与独立 Dialog 窗口共用同一个全局累加器。
+    public final void handleRotaryHaptics(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_SCROLL
                 && event.isFromSource(InputDevice.SOURCE_ROTARY_ENCODER)) {
             int axis = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
@@ -110,17 +114,11 @@ public abstract class WearActivity extends ComponentActivity {
             if (delta != 0f) {
                 rotaryAccumulator += delta;
                 if (Math.abs(rotaryAccumulator) >= CalculatorHaptics.ROTARY_THRESHOLD) {
-                    View decor = getWindow().getDecorView();
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-                        decor.performHapticFeedback(18);
-                    } else {
-                        decor.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK);
-                    }
+                    CalculatorHaptics.perform(getWindow().getDecorView());
                     rotaryAccumulator = 0f;
                 }
             }
         }
-        return super.dispatchGenericMotionEvent(event);
     }
 
     @Override

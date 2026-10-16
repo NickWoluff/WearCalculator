@@ -53,6 +53,7 @@ class ThemeActivity : WearActivity() {
         ScreenScaffold(scrollInfoProvider = remember(state) { ScrollInfoProvider(state) },
             contentPadding = PaddingValues(horizontal = side)) { padding ->
             TransformingLazyColumn(state = state, contentPadding = padding,
+                rotaryScrollableBehavior = RotaryScrollableDefaults.behavior(state, hapticFeedbackEnabled = false),
                 modifier = Modifier.fillMaxSize().testTag("theme_list").background(MaterialTheme.colorScheme.background)) {
                 item { ListHeader(Modifier.fillMaxWidth().transformedHeight(this, spec)
                     .minimumVerticalContentPadding(ListHeaderDefaults.minimumTopListContentPadding),
@@ -71,14 +72,14 @@ class ThemeActivity : WearActivity() {
             LazyColumn(state = state, contentPadding = padding, verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier.fillMaxSize().testTag("theme_list").background(MaterialTheme.colorScheme.background)
                     .requestFocusOnHierarchyActive()
-                    .rotaryScrollable(RotaryScrollableDefaults.behavior(state), focus)) {
+                    .rotaryScrollable(RotaryScrollableDefaults.behavior(state, hapticFeedbackEnabled = false), focus)) {
                 item { ListHeader(Modifier.fillMaxWidth()) { Text(stringResource(R.string.theme_settings)) } }
                 items(2) { index -> ThemeOption(index, appearance, { picker = it }, Modifier.fillMaxWidth()) }
             }
         }
     }
     // 嗷呜文件采用两个折叠入口，点击后打开官方单选弹窗；选择即保存并收起。
-    AlertDialog(visible = picker == "accent", onDismissRequest = { picker = null },
+    CalculatorAlertDialog(visible = picker == "accent", onDismissRequest = { picker = null },
         modifier = Modifier.testTag("accent_dialog"),
         title = { Text(stringResource(R.string.accent_color)) }, content = {
             accents.forEachIndexed { index, accent -> item {
@@ -87,7 +88,7 @@ class ThemeActivity : WearActivity() {
                     modifier = Modifier.fillMaxWidth().testTag("accent_$index")) { Text(accent.label) }
             } }
         })
-    AlertDialog(visible = picker == "palette", onDismissRequest = { picker = null },
+    CalculatorAlertDialog(visible = picker == "palette", onDismissRequest = { picker = null },
         modifier = Modifier.testTag("palette_dialog"),
         title = { Text(stringResource(R.string.palette_style)) }, content = {
             PaletteStyle.entries.forEach { palette -> item {

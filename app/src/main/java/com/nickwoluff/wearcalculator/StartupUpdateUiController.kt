@@ -11,7 +11,6 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.wear.compose.material3.AlertDialog
 import androidx.wear.compose.material3.Button
 import androidx.wear.compose.material3.Text
 
@@ -24,7 +23,7 @@ class StartupUpdateUiController(activity: ComponentActivity, model: StartupUpdat
         setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
         setContent {
             CalculatorTheme {
-                AlertDialog(visible = version != null, onDismissRequest = model::dismiss,
+                CalculatorAlertDialog(visible = version != null, onDismissRequest = model::dismiss,
                     modifier = Modifier.testTag("startup_update_dialog"),
                     title = { Text(stringResource(R.string.new_version, version.orEmpty())) },
                     text = { Text(stringResource(R.string.update_instructions)) },
