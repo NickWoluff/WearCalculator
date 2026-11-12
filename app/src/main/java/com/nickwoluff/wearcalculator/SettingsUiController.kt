@@ -83,7 +83,7 @@ class SettingsUiController @JvmOverloads constructor(
             ScreenScaffold(scrollInfoProvider = remember(state) { ScrollInfoProvider(state) },
                 contentPadding = PaddingValues(horizontal = side)) { padding ->
                 TransformingLazyColumn(state = state, contentPadding = padding,
-                    rotaryScrollableBehavior = RotaryScrollableDefaults.behavior(state, hapticFeedbackEnabled = false),
+                    rotaryScrollableBehavior = RotaryScrollableDefaults.behavior(state),
                     modifier = Modifier.fillMaxSize().testTag("settings_list").background(MaterialTheme.colorScheme.background)) {
                     item {
                         ListHeader(modifier = Modifier.fillMaxWidth().transformedHeight(this, spec)
@@ -134,7 +134,7 @@ class SettingsUiController @JvmOverloads constructor(
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                     modifier = Modifier.fillMaxSize().testTag("settings_list").background(MaterialTheme.colorScheme.background)
                         .requestFocusOnHierarchyActive()
-                        .rotaryScrollable(RotaryScrollableDefaults.behavior(state, hapticFeedbackEnabled = false), focus)) {
+                        .rotaryScrollable(RotaryScrollableDefaults.behavior(state), focus)) {
                     item { ListHeader(Modifier.fillMaxWidth()) { Text(stringResource(R.string.settings_title)) } }
                     item { HighPrecisionSwitch(Modifier.fillMaxWidth()) }
                     item { ThemeButton(Modifier.fillMaxWidth()) }

@@ -110,6 +110,7 @@ public class CalculatorPagingTest {
         instrumentation.runOnMainSync(() -> assertEquals(
                 activity.getString(R.string.page_indicator_description, 2),
                 activity.findViewById(R.id.pageIndicator).getContentDescription()));
+        onView(withId(R.id.btnScientificAc)).perform(click());
         onView(withId(R.id.btnSecond)).perform(click());
         onView(withId(R.id.btnSin)).check(matches(withText("sin⁻¹")));
         onView(withId(R.id.btnCos)).check(matches(withText("cos⁻¹")));

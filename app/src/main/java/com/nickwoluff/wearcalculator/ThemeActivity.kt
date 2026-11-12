@@ -53,7 +53,7 @@ class ThemeActivity : WearActivity() {
         ScreenScaffold(scrollInfoProvider = remember(state) { ScrollInfoProvider(state) },
             contentPadding = PaddingValues(horizontal = side)) { padding ->
             TransformingLazyColumn(state = state, contentPadding = padding,
-                rotaryScrollableBehavior = RotaryScrollableDefaults.behavior(state, hapticFeedbackEnabled = false),
+                rotaryScrollableBehavior = RotaryScrollableDefaults.behavior(state),
                 modifier = Modifier.fillMaxSize().testTag("theme_list").background(MaterialTheme.colorScheme.background)) {
                 item { ListHeader(Modifier.fillMaxWidth().transformedHeight(this, spec)
                     .minimumVerticalContentPadding(ListHeaderDefaults.minimumTopListContentPadding),
@@ -72,7 +72,7 @@ class ThemeActivity : WearActivity() {
             LazyColumn(state = state, contentPadding = padding, verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier.fillMaxSize().testTag("theme_list").background(MaterialTheme.colorScheme.background)
                     .requestFocusOnHierarchyActive()
-                    .rotaryScrollable(RotaryScrollableDefaults.behavior(state, hapticFeedbackEnabled = false), focus)) {
+                    .rotaryScrollable(RotaryScrollableDefaults.behavior(state), focus)) {
                 item { ListHeader(Modifier.fillMaxWidth()) { Text(stringResource(R.string.theme_settings)) } }
                 items(2) { index -> ThemeOption(index, appearance, { picker = it }, Modifier.fillMaxWidth()) }
             }

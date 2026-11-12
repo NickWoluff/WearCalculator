@@ -112,9 +112,9 @@
         </LinearLayout>
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1" android:weightSum="4">
-            <Button android:id="@+id/btn0" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2" android:layout_margin="2dp" android:background="@drawable/bg_btn_dark" android:text="0" android:textColor="#FFF" android:textSize="18sp" />
-            <Button android:id="@+id/btnDot" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="2dp" android:background="@drawable/bg_btn_dark" android:text="." android:textColor="#FFF" android:textSize="18sp" />
-            <Button android:id="@+id/btnEq" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:layout_margin="2dp" android:background="@drawable/bg_btn_accent" android:text="=" android:textColor="#FFF" android:textSize="18sp" />
+            <Button android:id="@+id/btn0" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="2.05" android:layout_margin="2dp" android:background="@drawable/bg_btn_dark" android:text="0" android:textColor="#FFF" android:textSize="18sp" />
+            <Button android:id="@+id/btnDot" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.975" android:layout_margin="2dp" android:background="@drawable/bg_btn_dark" android:text="." android:textColor="#FFF" android:textSize="18sp" />
+            <Button android:id="@+id/btnEq" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="0.975" android:layout_margin="2dp" android:background="@drawable/bg_btn_accent" android:text="=" android:textColor="#FFF" android:textSize="18sp" />
         </LinearLayout>
     </LinearLayout>
 

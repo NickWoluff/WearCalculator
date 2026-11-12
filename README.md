@@ -2,9 +2,7 @@
 
 ![Last Version](https://img.shields.io/github/release/NickWoluff/WearCalculator/all.svg?style=flat-square&color=brightgreen)
 
-**专为 Wear OS 智能手表打造的计算器，嗷呜！**
-
-当前项目版本：**1.2.2**。
+**专为智能手表打造的高精度计算器，嗷呜！**
 
 ## ✨ 核心特性
 
@@ -15,7 +13,7 @@
 - 历史记录：保存最近 10 次成功运算，重启后仍可查看；最新记录位于底部，每条算式与结果都可单独左右滑动。
 - 主题设置：默认使用经典配色，可选择其他强调色及 Tonal Spot、Vibrant、Expressive、Neutral、Monochrome、Fidelity 调色板风格；经典模式的页码指示器为灰色。
 - 检查更新：默认开启启动时自动检查，也可在设置中关闭或手动检查 GitHub Release 更新。
-- 手表界面：设置和主题页面使用 Wear Material 3 组件，配有悬浮时间、页码指示器和适配方圆屏的悬浮提示。
+- 友好界面：设置和主题页面使用 Wear Material 3 组件，配有悬浮时间、页码指示器和适配方圆屏的悬浮提示。
 
 ## 👆 操作说明
 

@@ -104,8 +104,9 @@ public abstract class WearActivity extends ComponentActivity {
         return super.dispatchGenericMotionEvent(event);
     }
 
-    // 普通页面与独立 Dialog 窗口共用同一个全局累加器。
-    public final void handleRotaryHaptics(MotionEvent event) {
+    // 仅原生计算器和历史页使用自定义反馈；Compose 页面与弹窗使用官方反馈。
+    private void handleRotaryHaptics(MotionEvent event) {
+        if (!(this instanceof MainActivity) && !(this instanceof HistoryActivity)) return;
         if (event.getAction() == MotionEvent.ACTION_SCROLL
                 && event.isFromSource(InputDevice.SOURCE_ROTARY_ENCODER)) {
             int axis = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O

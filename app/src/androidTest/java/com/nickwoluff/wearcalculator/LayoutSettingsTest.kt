@@ -76,6 +76,7 @@ class LayoutSettingsTest {
                 activity.findViewById<Button>(id).performClick()
             }
             activity.findViewById<SwipeLayout>(R.id.buttonArea).setCurrentPage(1)
+            activity.findViewById<Button>(R.id.btnScientificAc).performClick()
             activity.findViewById<Button>(R.id.btnSecond).performClick()
         }
         instrumentation.startActivitySync(Intent(context, SettingsActivity::class.java)
